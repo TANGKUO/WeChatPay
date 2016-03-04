@@ -37,7 +37,7 @@ public class WeChatPay implements IXposedHookLoadPackage {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 super.afterHookedMethod(param);
-                startActivity(param);
+                startActivity(param, true);
             }
         });
     }
@@ -53,7 +53,7 @@ public class WeChatPay implements IXposedHookLoadPackage {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 super.afterHookedMethod(param);
-                startActivity(param);
+                startActivity(param, false);
             }
         });
     }
@@ -63,11 +63,19 @@ public class WeChatPay implements IXposedHookLoadPackage {
      *
      * @param param
      */
-    private void startActivity(XC_MethodHook.MethodHookParam param) {
+    private void startActivity(XC_MethodHook.MethodHookParam param, boolean create) {
         try {
             XposedBridge.log(String.format("%s, Current activity: %s", Const.PACKAGE_TAG, param.thisObject.toString()));
             Activity activity = (Activity) param.thisObject;
-            boolean extra = activity.getIntent().getBooleanExtra(Const.KEY_IS_START, false);
+
+            Intent intent;
+            if (create) {
+                intent = activity.getIntent();
+            } else {
+                intent = (Intent) param.args[0];
+            }
+
+            boolean extra = intent.getBooleanExtra(Const.KEY_IS_START, false);
             if (extra) {
                 XposedBridge.log(String.format("%s, Start from: %s", Const.PACKAGE_TAG, param.thisObject.toString()));
 
