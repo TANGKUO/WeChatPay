@@ -3,6 +3,7 @@ package cn.soloho.wechatpay;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.os.Bundle;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
@@ -21,7 +22,7 @@ public class WeChatPay implements IXposedHookLoadPackage {
         }
         XposedBridge.log("检测到你加载微信: " + loadPackageParam.packageName);
 
-        XposedHelpers.findAndHookMethod("com.tencent.mm.ui.LauncherUI", loadPackageParam.classLoader, "onCreate", new XC_MethodHook() {
+        XposedHelpers.findAndHookMethod("com.tencent.mm.ui.LauncherUI", loadPackageParam.classLoader, "onCreate", Bundle.class, new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 super.afterHookedMethod(param);
