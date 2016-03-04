@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "cn.soloho.wechatpay"
+        applicationId "cn.soloho.starter"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1

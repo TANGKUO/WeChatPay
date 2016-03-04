@@ -1,4 +1,4 @@
-package cn.soloho.wechatpay;
+package cn.soloho.starter;
 
 import android.content.ComponentName;
 import android.content.Intent;
@@ -17,17 +17,13 @@ public class MainActivity extends AppCompatActivity {
         Intent starter = new Intent(this, MainActivity.class);
         starter.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         ComponentName componentName = new ComponentName(
-                "com.tencent.mm",
-                "com.tencent.mm.ui.LauncherUI");
+                Const.PACKAGE_WECHAT,
+                Const.ACTIVITY_WECHAT_LAUNCHERUI);
         starter.setComponent(componentName);
-        starter.putExtra("StartPay", true);
+        starter.putExtra(Const.KEY_IS_START, true);
         startActivity(starter);
 
         finish();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
 }
