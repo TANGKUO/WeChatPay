@@ -15,16 +15,16 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 /**
  * Created by kjsolo on 16/3/4.
  */
-public class WeChatPay implements IXposedHookLoadPackage {
+public class XposedStarter implements IXposedHookLoadPackage {
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam loadPackageParam) throws Throwable {
-        if (!loadPackageParam.packageName.equals(Const.PACKAGE_WECHAT)) {
-            return;
+        if (loadPackageParam.packageName.equals(Const.PACKAGE_WECHAT)
+                || loadPackageParam.packageName.equals(Const.PACKAGE_ALIPAY)) {
+            XposedBridge.log(String.format("%s, Loaded: %s", Const.PACKAGE_TAG, loadPackageParam.packageName));
+            hookOnCreate(loadPackageParam);
+            hookOnNewIntent(loadPackageParam);
         }
-        XposedBridge.log(String.format("%s, Loaded: %s", Const.PACKAGE_TAG, loadPackageParam.packageName));
-        hookOnCreate(loadPackageParam);
-        hookOnNewIntent(loadPackageParam);
     }
 
     /**
@@ -49,7 +49,6 @@ public class WeChatPay implements IXposedHookLoadPackage {
      * @param loadPackageParam
      */
     private void hookOnNewIntent(XC_LoadPackage.LoadPackageParam loadPackageParam) {
-        // com.tencent.mm.ui.LauncherUI
         XposedHelpers.findAndHookMethod(Const.ACTIVITY_APP_ACTIVITY, loadPackageParam.classLoader, Const.METHOD_ACTIVITY_ON_NEW_INTENT, Intent.class, new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {

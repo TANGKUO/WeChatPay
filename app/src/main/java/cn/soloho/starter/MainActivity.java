@@ -10,10 +10,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//        StarerIntentService.startActionStart(this,
+//                Const.PACKAGE_WECHAT,
+//                Const.ACTIVITY_WECHAT_PAY);
+
         StarerIntentService.startActionStart(this,
-                Const.PACKAGE_WECHAT,
-                Const.ACTIVITY_WECHAT_LAUNCHERUI,
-                Const.ACTIVITY_WECHAT_PAY);
+                Const.PACKAGE_ALIPAY,
+                Const.ACTIVITY_ALIPAY_PAY);
+
         finish();
     }
 

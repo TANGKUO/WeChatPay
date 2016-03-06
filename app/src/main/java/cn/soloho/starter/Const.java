@@ -23,5 +23,10 @@ public interface Const {
     ///////////////////////////////////////////////////////////////////////////
     String PACKAGE_WECHAT = "com.tencent.mm";
     String ACTIVITY_WECHAT_PAY = PACKAGE_WECHAT + ".plugin.offline.ui.WalletOfflineEntranceUI"; // or WalletOfflineCoinPurseUI
-    String ACTIVITY_WECHAT_LAUNCHERUI = PACKAGE_WECHAT + ".ui.LauncherUI";
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Alipay
+    ///////////////////////////////////////////////////////////////////////////
+    String PACKAGE_ALIPAY = "com.eg.android.AlipayGphone";
+    String ACTIVITY_ALIPAY_PAY = "com.alipay.mobile.onsitepay9.payer.OspTabHostActivity";
 }
