@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
@@ -63,32 +64,31 @@ public class WeChatPay implements IXposedHookLoadPackage {
      *
      * @param param
      */
-    private void startActivity(XC_MethodHook.MethodHookParam param, boolean create) {
+    private void startActivity(XC_MethodHook.MethodHookParam param, boolean isActivityCreate) {
         try {
             XposedBridge.log(String.format("%s, Current activity: %s", Const.PACKAGE_TAG, param.thisObject.toString()));
             Activity activity = (Activity) param.thisObject;
 
             Intent intent;
-            if (create) {
+            if (isActivityCreate) {
                 intent = activity.getIntent();
             } else {
                 intent = (Intent) param.args[0];
             }
 
-            boolean extra = intent.getBooleanExtra(Const.KEY_IS_START, false);
-            if (extra) {
+            String startPackage = intent.getStringExtra(Const.KEY_START_PACKAGE);
+            String startActivity = intent.getStringExtra(Const.KEY_START_ACTIVITY);
+            if (!TextUtils.isEmpty(startActivity)) {
                 XposedBridge.log(String.format("%s, Start from: %s", Const.PACKAGE_TAG, param.thisObject.toString()));
 
                 Intent starter = new Intent(activity, MainActivity.class);
                 starter.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                ComponentName componentName = new ComponentName(
-                        Const.PACKAGE_WECHAT,
-                        Const.ACTIVITY_WECHAT_PAY);
+                ComponentName componentName = new ComponentName(startPackage, startActivity);
                 starter.setComponent(componentName);
                 activity.startActivity(starter);
             }
         } catch (Exception e) {
-            XposedBridge.log("Start failed");
+            XposedBridge.log(String.format("%s, Start failed", Const.PACKAGE_TAG));
             XposedBridge.log(e);
         }
     }
